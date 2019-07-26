@@ -1,9 +1,9 @@
 package com.sysintelli.dao;
 
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,88 +22,85 @@ public class EmployeeDAO {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-Connection con = null;
+
+	Connection con = null;
+
 	public void addEmployee(Employee emp) {
-		
-		
+
 		try {
-			if(con==null)
-			con= dataSource.getConnection();
-			Statement st=con.createStatement();
-			((java.sql.Statement) st).execute("insert into employee values ("+emp.getId()+",'"+emp.getName()+"',"+emp.getSalary()+")");
+			if (con == null) {
+				con = dataSource.getConnection();
+				Statement st = con.createStatement();
+				st.execute("INSERT INTO `spring`.`employee` VALUES(" + emp.getId() + ",'" + emp.getName() + "',"
+						+ emp.getSalary() + ")");
+				System.out.println("insert");
+			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("Add");
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
 		}
-	finally {
-		if (con!=null)
-		try {
-			con.close();
-		}
-			catch (SQLException e) {
-				e.printStackTrace();
-		}
+
 	}
-	
-	}
-	
+
 	public void deleteEmployeeByID(int empID) {
 		try {
-			if(con==null)
-			con= dataSource.getConnection();
-			Statement st=con.createStatement();
-			
-			((java.sql.Statement) st).execute("delete from employee where id="+empID);  
+			if (con == null) {
+				con = dataSource.getConnection();
+				Statement st = con.createStatement();
+				st.execute("Delete  from  employee where id=" + empID);
+				System.out.println("Deleted");
+			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("Delete");
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
 		}
-	finally {
-		if (con!=null)
-		try {
-			con.close();
-		}
-			catch (SQLException e) {
-				e.printStackTrace();
-		}
-	}
-	
 	}
 
 	public Employee getEmployeeByID(int empID) {
-		
-	Employee emp= new Employee();
-	int id = 0;
-	String name = "";
-	float Salary = 0;
-	
+		Employee e = new Employee();
+
+		int id = 0;
+		String name = " ";
+		float salary = 0;
 		try {
-			if(con==null)
-			con= dataSource.getConnection();
-			Statement st=con.createStatement();
-			ResultSet rs= st.executeQuery("select * from employee where id ="+empID);
-			while (rs.next()){
-				id = rs.getInt("id");
-			 name = rs.getString("Name");
-			Salary = rs.getFloat("Salary");
+
+			if (con == null) {
+				con = dataSource.getConnection();
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery("Select * from employee where id=" + empID);
+				while (rs.next()) {
+					id = rs.getInt("id");
+					name = rs.getString("name");
+					salary = rs.getFloat("salary");
+				}
+				e.setId(id);
+				e.setName(name);
+				e.setSalary(salary);
+
 			}
-			
-			emp.setId(rs.getInt("id"));
-			emp.setName(rs.getString("Name"));
-			emp.setSalary(rs.getFloat("Salary"));
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("getall");
-			
+		} catch (SQLException ea) {
+			// TODO Auto-generated catch block
+			ea.printStackTrace();
 		}
-		return emp;
+
+		return e;
 	}
-		
-	
-	
-	
 
 	public List<Employee> getAllEmployees() {
 		ArrayList<Employee> E = new ArrayList<Employee>();
@@ -114,30 +111,26 @@ Connection con = null;
 
 		try {
 
-		if (con == null) {
-		con = dataSource.getConnection();
-		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select * from employee");
-		while (rs.next()) {
-		       Employee em = new Employee();
-		           id = rs.getInt("id");
-		           name = rs.getString("name");
-		          salary = rs.getFloat("salary");
-		em.setId(id);
-		em.setName(name);
-		em.setSalary(salary);
+			if (con == null) {
+				con = dataSource.getConnection();
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery("select * from spring.employee");
+				while (rs.next()) {
+					Employee ea = new Employee();
+					id = rs.getInt("id");
+					name = rs.getString("name");
+					salary = rs.getFloat("salary");
+					ea.setId(id);
+					ea.setName(name);
+					ea.setSalary(salary);
 
-		E.add(em);
-		}
-		}
+					E.add(ea);
+				}
+			}
 
 		} catch (Exception e) {
-		// TODO: handle exception
+			// TODO: handle exception
 		}
 		return E;
-		}
 	}
-
-
-
-
+}

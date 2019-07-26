@@ -4,20 +4,17 @@
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<bean id="dataSources" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<constructor-arg value="jdbc:oracle:thin:@localhost:1521/xe"/>
-		<constructor-arg value="System"/>
-		<constructor-arg value="12345"/>
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<constructor-arg value="jdbc:mysql://localhost:3306/spring"/>
+		<constructor-arg value="root"/>
+		<constructor-arg value="root123"/>
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
 	</bean>
-	
-	<!-- Configure EmployeeDAO here -->
-	<bean id = "empDao" class= "com.sysintelli.dao.EmployeeDAO">
-	<property name = "dataSource" ref ="dataSources"/>
-	
-	</bean>
-	
-	<bean id = "empid" class= "com.sysintelli.entity.Employee">
-	<property name= "id" value="3"/>
-	
-	</bean>	
+	<bean   id="Emp" class="com.sysintelli.dao.EmployeeDAO">
+	<property name="dataSource" ref="dataSources" > </property>
+</bean>
+
+<bean id="em" class="com.sysintelli.entity.Employee" >
+     <property name="id" value="2"></property>
+
+ 
 </beans>
